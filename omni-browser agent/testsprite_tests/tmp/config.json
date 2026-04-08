@@ -1,0 +1,20 @@
+{
+  "status": "commited",
+  "type": "backend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:8000/http://localhost:8000",
+  "backendAuthType": "API key",
+  "backendApiKey": "omni browser",
+  "backendApiValue": "sk-user-q5Zl2gt_L0Nl6DnB3edGlnDDmZueFX7HC6w007hNykl6s6P_ba_6ydKdlDF4NLsZv-kn5r7dZqjDZeob98T_F3r4Dfgvj7QWvpCljKwS1aObNoIxCXa-uaGXulAB3GEmdXo  ",
+  "executionArgs": {
+    "projectName": "omni-browser agent",
+    "projectPath": "e:\\Super_Agent\\omni-browser agent",
+    "testIds": [],
+    "additionalInstruction": "",
+    "serverMode": "development",
+    "envs": {
+      "API_KEY": "sk-user-q5Zl2gt_L0Nl6DnB3edGlnDDmZueFX7HC6w007hNykl6s6P_ba_6ydKdlDF4NLsZv-kn5r7dZqjDZeob98T_F3r4Dfgvj7QWvpCljKwS1aObNoIxCXa-uaGXulAB3GEmdXo"
+    }
+  },
+  "serverPort": 1610
+}

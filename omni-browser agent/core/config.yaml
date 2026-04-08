@@ -1,0 +1,79 @@
+# Omni Browser Agent Configuration
+# Master YAML with all tunable parameters
+
+# Browser Configuration
+browser:
+  headless: false
+  browser_type: chromium  # chromium, firefox, webkit
+  timeout: 200000          # milliseconds
+  viewport_width: 1920
+  viewport_height: 1080
+  stealth_mode: true
+
+# Social Media Platform Configuration
+social:
+  youtube_transcript_api_enabled: true
+  instagram_login_enabled: true
+  linkedin_api_enabled: true
+  twitter_api_enabled: true
+  rate_limit_per_minute: 30
+
+# Debate Engine Configuration
+debate:
+  max_history_entries: 100
+  enable_redis_persistence: false
+  debate_temperature: 0.7
+  debate_max_tokens: 2000
+
+# Redis Configuration (optional)
+redis:
+  host: localhost
+  port: 6379
+  password: null
+  db: 0
+
+# AI/NVIDIA Model Configuration
+ai:
+  vision_model: qwen/qwen3.5-397b-a17b
+  audio_model: nemotron-asr
+  llm_model: minimaxai/minimax-m2.5
+  vision_temperature: 0.3
+  audio_temperature: 0.1
+  llm_temperature: 0.7
+  max_retries: 3
+  retry_delay: 1000  # milliseconds
+
+# Navigation Configuration
+navigation:
+  max_steps: 30
+  screenshot_quality: 80
+  wait_for_navigation: true
+  human_like_delays: true
+
+# Extraction Configuration
+extraction:
+  youtube_transcript_first: true
+  audio_split_chunk_size: 30  # seconds
+  frame_extraction_fps: 1
+  vision_analysis_interval: 5  # seconds
+
+# Logging Configuration
+logging:
+  level: INFO
+  format: json
+  file_path: logs/omni_browser.log
+  console_enabled: true
+  json_file_enabled: true
+
+# Security Configuration
+security:
+  prompt_injection_scan: true
+  session_encryption: true
+  token_refresh_buffer: 300  # seconds before expiry
+
+# Development/Demo Configuration
+demo:
+  enabled: false
+  use_stub_credentials: false
+  mock_browser: false
+  mock_ai_responses: false

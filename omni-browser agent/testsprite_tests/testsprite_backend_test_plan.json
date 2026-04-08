@@ -1,0 +1,12 @@
+[
+  {
+    "id": "TC001",
+    "title": "post_api_task_execute_browser_task",
+    "description": "Test POST /api/task endpoint to verify execution of autonomous browser tasks including web research, scraping, and interaction. Validate successful task completion with correct results, proper error handling for missing required fields, and URL validation errors."
+  },
+  {
+    "id": "TC002",
+    "title": "post_api_debate_run_debate_engine",
+    "description": "Test POST /api/debate endpoint to verify the debate engine synthesizes two conflicting or ambiguous prompts into a single actionable instruction set. Validate successful synthesis response, handling of oversized or invalid payloads with 422 errors, and internal LLM failure resulting in 500 errors."
+  }
+]

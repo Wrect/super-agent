@@ -1,0 +1,5 @@
+2026/04/07-23:38:19.261 3438 Creating DB E:\Super_Agent\omni-browser agent\data\temp_ig_profile\Default\EdgeCoupons/coupons_data.db since it was missing.
+2026/04/07-23:38:19.268 3438 Reusing MANIFEST E:\Super_Agent\omni-browser agent\data\temp_ig_profile\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/04/07-23:38:20.343 1b38 Level-0 table #5: started
+2026/04/07-23:38:20.351 1b38 Level-0 table #5: 682105 bytes OK
+2026/04/07-23:38:20.353 1b38 Delete type=0 #3

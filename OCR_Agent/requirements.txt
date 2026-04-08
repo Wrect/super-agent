@@ -1,0 +1,8 @@
+# Project Omni-Extract — Python Dependencies
+crewai>=0.108.0
+pydantic>=2.0
+requests>=2.31
+python-dotenv>=1.0
+opencv-python>=4.8
+pyyaml>=6.0
+colorama>=0.4

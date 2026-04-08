@@ -1,0 +1,31 @@
+version: "2"
+type: backend
+tech_stack:
+  - Python
+  - FastAPI
+  - Playwright
+  - CrewAI
+features:
+  - name: Omni Browser Agent API
+    description: Execute browser automation tasks, research, and platform extraction
+    files:
+      - main.py
+      - api/server.py
+      - agents/crew.py
+      - pipeline/task_router.py
+      - pipeline/extractor.py
+    endpoints:
+      - method: POST
+        path: /api/task
+        description: Execute a browser task
+        auth_required: false
+      - method: POST
+        path: /api/debate
+        description: Run debate engine on two prompts
+        auth_required: false
+    depends_on:
+      - BrowserAutomation
+known_limitations:
+  - issue: API paths are inferred from CLI endpoints
+    location: main.py
+    impact: Actual FastAPI routes might vary inside api/server.py

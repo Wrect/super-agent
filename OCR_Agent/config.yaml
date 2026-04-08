@@ -1,0 +1,245 @@
+# =============================================================================
+# Project Omni-Extract — Master Configuration
+# =============================================================================
+# This YAML file is the SINGLE SOURCE OF TRUTH for every tunable parameter.
+# Edit here, propagate everywhere. API keys are loaded from .env (never here).
+# =============================================================================
+
+# ─────────────────────────────────────────────────────────────────────────────
+# NVIDIA API Connection
+# ─────────────────────────────────────────────────────────────────────────────
+api:
+  base_url: "https://integrate.api.nvidia.com/v1"
+  # API key is read from the NVIDIA_API_KEY environment variable — never store
+  # secrets in this file.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Model Registry — change model IDs here, nowhere else
+# ─────────────────────────────────────────────────────────────────────────────
+models:
+  # CrewAI agent "brain" LLM
+  agent_llm: "nvidia_nim/meta/llama-3.1-70b-instruct"
+
+  # Vision OCR & understanding (images & documents)
+  vision: "qwen/qwen3.5-397b-a17b"
+
+  # Audio transcription (speech-to-text)
+  audio_asr: "nvidia/parakeet-ctc-1.1b-asr"
+
+  # Video understanding (frame-sampling + vision model)
+  video: "qwen/qwen3.5-397b-a17b"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LLM Hyper-parameters (agent brain)
+# ─────────────────────────────────────────────────────────────────────────────
+llm_params:
+  temperature: 0.1
+  max_tokens: 4096
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Vision Tool Settings
+# ─────────────────────────────────────────────────────────────────────────────
+vision_tool:
+  max_tokens: 4096
+  temperature: 0.1
+  timeout_seconds: 180
+
+  # Prompt used for pure text / OCR extraction
+  ocr_prompt: >-
+    Extract ALL text visible in this image exactly as written.
+    Include every heading, paragraph, table, caption, watermark,
+    and any other on-screen text. Preserve the original layout
+    as closely as possible. Do NOT summarise or paraphrase.
+
+  # Prompt used for image understanding / scene analysis
+  understanding_prompt: >-
+    Analyze this image in comprehensive detail. Provide:
+    1. **Scene Description**: What is depicted in the image overall.
+    2. **Object Detection**: Explicitly identify and list all specific objects present in the image (e.g., animals like a cat or a dog, furniture, vehicles, items, people, icons, and UI elements). Give details about their appearance, quantities, and position.
+    3. **Text Content**: Extract any visible text verbatim.
+    4. **Colors & Style**: Dominant colors, visual style, and mood.
+    5. **Layout & Composition**: How elements are arranged spatially.
+    6. **Context & Purpose**: What this image likely represents or is used for.
+    Be thorough and precise. Do NOT make up details that are not visible.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Audio Tool Settings
+# ─────────────────────────────────────────────────────────────────────────────
+audio_tool:
+  language: "en"
+  timeout_seconds: 180
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Video Tool Settings
+# ─────────────────────────────────────────────────────────────────────────────
+video_tool:
+  max_frames: 10
+  frame_interval_seconds: 5.0
+  per_frame_max_tokens: 2048
+  per_frame_temperature: 0.1
+  per_frame_timeout: 120
+  frame_prompt: >-
+    This is a frame extracted from a video.
+    Extract ALL on-screen text exactly as written.
+    Also briefly describe the key visual elements
+    and any actions happening in this frame.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Agent / Crew Behaviour
+# ─────────────────────────────────────────────────────────────────────────────
+agent:
+  role: "Omni-Modal Data Extraction Node"
+  goal: >-
+    Autonomously select the correct NVIDIA tool based on file
+    extension, extract the data, and format it exactly to the
+    required Pydantic schema. Never hallucinate content — only
+    return what the tool actually extracted.
+  backstory: >-
+    You are a specialised data-extraction node inside a larger
+    AI orchestration pipeline. Your upstream Super Agent sends you
+    a file path. You must: (1) detect the media type from the file
+    extension, (2) choose the matching NVIDIA extraction tool,
+    (3) invoke it, and (4) return the extracted content formatted
+    precisely according to the ExtractionResult schema. Accuracy
+    and schema compliance are your top priorities.
+  verbose: true
+  allow_delegation: false
+  max_iter: 5
+  default_confidence: 0.85
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Output Settings
+# ─────────────────────────────────────────────────────────────────────────────
+output:
+  base_dir: "./outputs"          # Root directory for all outputs
+  save_json: true                # Save results as .json files
+  save_text: true                # Save extracted text as .txt files
+  organize_by_type: true         # Create sub-dirs: images/, documents/, etc.
+  timestamp_files: true          # Prefix filenames with timestamp
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Batch Processing
+# ─────────────────────────────────────────────────────────────────────────────
+batch:
+  max_workers: 4                 # Concurrent processing threads
+  recursive: false               # Scan sub-directories
+  skip_unsupported: true         # Skip files with unknown types
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Security — READ-ONLY ENFORCEMENT
+# ─────────────────────────────────────────────────────────────────────────────
+security:
+  read_only: true                # NEVER set to false in production
+  allowed_operations:
+    - read
+    - list
+    - stat
+    - analyze
+  blocked_operations:
+    - write
+    - delete
+    - rename
+    - move
+    - chmod
+    - copy_to_source
+
+# ─────────────────────────────────────────────────────────────────────────────
+# File Type ↔ Category Mapping
+# ─────────────────────────────────────────────────────────────────────────────
+file_types:
+  image:
+    - ".png"
+    - ".jpg"
+    - ".jpeg"
+    - ".gif"
+    - ".bmp"
+    - ".tiff"
+    - ".tif"
+    - ".webp"
+    - ".svg"
+    - ".ico"
+    - ".heic"
+    - ".heif"
+
+  document:
+    - ".pdf"
+    - ".doc"
+    - ".docx"
+    - ".txt"
+    - ".rtf"
+    - ".odt"
+    - ".md"
+    - ".tex"
+    - ".epub"
+
+  spreadsheet:
+    - ".xlsx"
+    - ".xls"
+    - ".csv"
+    - ".ods"
+    - ".tsv"
+
+  presentation:
+    - ".pptx"
+    - ".ppt"
+    - ".odp"
+    - ".key"
+
+  audio:
+    - ".mp3"
+    - ".wav"
+    - ".flac"
+    - ".ogg"
+    - ".m4a"
+    - ".aac"
+    - ".wma"
+    - ".opus"
+
+  video:
+    - ".mp4"
+    - ".mov"
+    - ".avi"
+    - ".mkv"
+    - ".webm"
+    - ".flv"
+    - ".wmv"
+    - ".m4v"
+
+  code:
+    - ".py"
+    - ".js"
+    - ".ts"
+    - ".java"
+    - ".cpp"
+    - ".c"
+    - ".h"
+    - ".cs"
+    - ".go"
+    - ".rs"
+    - ".rb"
+    - ".php"
+    - ".swift"
+    - ".kt"
+    - ".html"
+    - ".css"
+    - ".json"
+    - ".xml"
+    - ".yaml"
+    - ".yml"
+    - ".toml"
+    - ".ini"
+    - ".cfg"
+    - ".sh"
+    - ".bat"
+    - ".ps1"
+
+  archive:
+    - ".zip"
+    - ".tar"
+    - ".gz"
+    - ".bz2"
+    - ".xz"
+    - ".rar"
+    - ".7z"
+    - ".tar.gz"
+    - ".tar.bz2"
