@@ -1,14 +1,10 @@
-# Environments
-.env
-.env.*
-!.env.example
-
-# Python
+# General Python Ignore
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+env/
 build/
 develop-eggs/
 dist/
@@ -20,28 +16,52 @@ lib64/
 parts/
 sdist/
 var/
-wheels/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
-# Virtual environments
+# Virtual Environments
 venv/
 .venv/
-env/
 ENV/
-env.bak/
-venv.bak/
+env/
 
-# Logs
+# Environment Variables & Keys
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+client_secret.json
+
+# Outputs & Logs
+outputs/
+output/
+tmp_repo/
 *.log
-logs/
+final_test*.log
+instagram_output.log
+error.log
+output.json
 
-# IDE / caches
-.ruff_cache/
+# Media Files
+*.mp4
+*.mp3
+*.wav
+*.flac
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.mkv
+*.avi
+*.mov
+
+# Agent and IDE
+.agent/
+.agents/
 .vscode/
 .idea/
-.pytest_cache/
-*.swp
+.ruff_cache/
